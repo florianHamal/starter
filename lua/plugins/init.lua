@@ -1,11 +1,9 @@
 return {
   {
     "stevearc/conform.nvim",
-    -- event = 'BufWritePre', -- uncomment for format on save
     opts = require "configs.conform",
   },
 
-  -- These are some examples, uncomment them if you want to see them work!
   {
     "neovim/nvim-lspconfig",
     config = function()
@@ -13,16 +11,25 @@ return {
     end,
   },
 
-  -- test new blink
-  -- { import = "nvchad.blink.lazyspec" },
+  {
+    "akinsho/flutter-tools.nvim",
+    lazy = false, -- Important: flutter-tools needs to start to take over dartls
+    dependencies = { "nvim-lua/plenary.nvim" },
+    config = function()
+      local nvc = require "nvchad.configs.lspconfig"
 
-  -- {
-  -- 	"nvim-treesitter/nvim-treesitter",
-  -- 	opts = {
-  -- 		ensure_installed = {
-  -- 			"vim", "lua", "vimdoc",
-  --      "html", "css"
-  -- 		},
-  -- 	},
-  -- },
+      require("flutter-tools").setup {
+        fvm = true,
+        lsp = {
+          on_attach = nvc.on_attach,
+          capabilities = nvc.capabilities,
+          settings = {
+            showTodos = true,
+            completeFunctionCalls = true, -- Auto-tabs into arguments
+            enableSnippets = true,        -- Required for "child:" suggestions
+          },
+        },
+      }
+    end,
+  },
 }
