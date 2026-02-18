@@ -18,6 +18,7 @@ map("n", "<leader>gsf", "<cmd>Gitsigns stage_hunk<cr>", { desc = "Git stage hunk
 map("n", "<leader>gsb", "<cmd>Gitsigns stage_buffer<cr>", { desc = "Git Stage Buffer" })
 map("n", "<leader>gr", "<cmd>Gitsigns undo_stage_hunk<cr>", { desc = "Git undo stage" })
 map("n", "<leader>gd", "<cmd>Gitsigns diffthis<cr>", { desc = "Git view diff" })
+map("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "LSP Code Action" })
 
 -- Quick Commit (Opens a prompt for the message)
 map("n", "<leader>gc", function()
