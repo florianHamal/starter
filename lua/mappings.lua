@@ -4,27 +4,34 @@ require "nvchad.mappings"
 
 local map = vim.keymap.set
 
-map("n", "<leader>lf", function()
+map("n", "<leader>dgf", function()
   vim.diagnostic.open_float { border = "rounded" }
 end, { desc = "Floating diagnostic" })
 
-map("n", "<leader>fw", "<cmd>Telescope diagnostics<cr>", { desc = "Telescope Workspace Diagnostics" })
+map("n", "<leader>dg", "<cmd>Telescope diagnostics<cr>", { desc = "Telescope Workspace Diagnostics" })
+
+map("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "LSP Code Action" })
 
 map("n", ";", ":", { desc = "CMD enter command mode" })
 map("i", "jk", "<ESC>")
 
 
-map("n", "<leader>gsf", "<cmd>Gitsigns stage_hunk<cr>", { desc = "Git stage hunk" })
+map("n", "<leader>gsf", "<cmd>Gitsigns stage_hunk<cr>", { desc = "Git Stage hunk" })
 map("n", "<leader>gsb", "<cmd>Gitsigns stage_buffer<cr>", { desc = "Git Stage Buffer" })
 map("n", "<leader>gr", "<cmd>Gitsigns undo_stage_hunk<cr>", { desc = "Git undo stage" })
 map("n", "<leader>gd", "<cmd>Gitsigns diffthis<cr>", { desc = "Git view diff" })
-map("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "LSP Code Action" })
 
 -- Reset (Revert) Hunk: Only revert the block under the cursor
-map("n", "<leader>rh", "<cmd>Gitsigns reset_hunk<cr>", { desc = "Git reset hunk" })
+map("n", "<leader>grh", "<cmd>Gitsigns reset_hunk<cr>", { desc = "Git reset hunk" })
 
 -- Reset (Revert) Buffer: Revert the ENTIRE file to its last commit state
-map("n", "<leader>rb", "<cmd>Gitsigns reset_buffer<cr>", { desc = "Git reset buffer" })
+map("n", "<leader>grb", "<cmd>Gitsigns reset_buffer<cr>", { desc = "Git reset buffer" })
+
+
+map("n", "<leader>gh", "<cmd>Telescope git_commits<cr>", { desc = "Git commit history" })
+map("n", "<leader>gfh", "<cmd>Telescope git_bcommits<cr>", { desc = "Buffer git commit history" })
+
+map("n", "<leader>gb", "<cmd>Gitsigns blame<cr>", { desc = "Git blame window" })
 
 -- Visual Mode: Revert only the lines you have selected
 map("v", "<leader>rh", function()
