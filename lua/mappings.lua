@@ -18,7 +18,8 @@ map("i", "jk", "<ESC>")
 
 map("n", "<leader>gsf", "<cmd>Gitsigns stage_hunk<cr>", { desc = "Git Stage hunk" })
 map("n", "<leader>gsb", "<cmd>Gitsigns stage_buffer<cr>", { desc = "Git Stage Buffer" })
-map("n", "<leader>gr", "<cmd>Gitsigns undo_stage_hunk<cr>", { desc = "Git undo stage" })
+map("n", "<leader>guh", "<cmd>Gitsigns undo_stage_hunk<cr>", { desc = "Git undo stage" })
+map("n", "<leader>guf", "<cmd>Gitsigns reset_buffer_index<cr>", { desc = "Git: Unstage File" })
 map("n", "<leader>gd", "<cmd>Gitsigns diffthis<cr>", { desc = "Git view diff" })
 
 -- Reset (Revert) Hunk: Only revert the block under the cursor
@@ -33,10 +34,55 @@ map("n", "<leader>gfh", "<cmd>Telescope git_bcommits<cr>", { desc = "Buffer git 
 
 map("n", "<leader>gb", "<cmd>Gitsigns blame<cr>", { desc = "Git blame window" })
 
+
+map("n", "<A-Up>", "<cmd>resize +2<cr>", { desc = "Window: Resize Up" })
+map("n", "<A-Down>", "<cmd>resize -2<cr>", { desc = "Window: Resize Down" })
+map("n", "<A-Left>", "<cmd>vertical resize -2<cr>", { desc = "Window: Resize Left" })
+map("n", "<A-Right>", "<cmd>vertical resize +2<cr>", { desc = "Window: Resize Right" })
+
 -- Visual Mode: Revert only the lines you have selected
 map("v", "<leader>rh", function()
   require("gitsigns").reset_hunk { vim.fn.line ".", vim.fn.line "v" }
 end, { desc = "Git reset selected hunk" })
+
+
+---- Ask OpenCode (the main chat/prompt)
+--map({ "n", "x" }, "<C-a>", function()
+--  require("opencode").ask("@this: ", { submit = true })
+--end, { desc = "OpenCode: Ask AI" })
+--
+---- Select from OpenCode Actions (Prompts like explain, fix, etc.)
+--map({ "n", "x" }, "<C-x>", function()
+--  require("opencode").select()
+--end, { desc = "OpenCode: Actions" })
+--
+---- Toggle the OpenCode Terminal/UI
+--map({ "n", "t" }, "<C-.>", function()
+--  require("opencode").toggle()
+--end, { desc = "OpenCode: Toggle UI" })
+--
+---- Use 'go' as an operator (e.g., 'goip' to send a paragraph to AI)
+--map("n", "<C-o>", function()
+--  return require("opencode").operator("@this ")
+--end, { desc = "OpenCode: Send range to AI", expr = true })
+
+    vim.o.autoread = true -- Required for `opts.events.reload`
+
+    -- Recommended/example keymaps
+    vim.keymap.set({ "n", "x" }, "<C-a>", function() require("opencode").ask("@this: ", { submit = true }) end, { desc = "Ask opencode…" })
+    vim.keymap.set({ "n", "x" }, "<C-x>", function() require("opencode").select() end,                          { desc = "Execute opencode action…" })
+    vim.keymap.set({ "n", "t" }, "<C-.>", function() require("opencode").toggle() end,                          { desc = "Toggle opencode" })
+
+    vim.keymap.set({ "n", "x" }, "go",  function() return require("opencode").operator("@this ") end,        { desc = "Add range to opencode", expr = true })
+    vim.keymap.set("n",          "goo", function() return require("opencode").operator("@this ") .. "_" end, { desc = "Add line to opencode", expr = true })
+
+    vim.keymap.set("n", "<S-C-u>", function() require("opencode").command("session.half.page.up") end,   { desc = "Scroll opencode up" })
+    vim.keymap.set("n", "<S-C-d>", function() require("opencode").command("session.half.page.down") end, { desc = "Scroll opencode down" })
+
+    -- You may want these if you use the opinionated `<C-a>` and `<C-x>` keymaps above — otherwise consider `<leader>o…` (and remove terminal mode from the `toggle` keymap)
+    vim.keymap.set("n", "+", "<C-a>", { desc = "Increment under cursor", noremap = true })
+    vim.keymap.set("n", "-", "<C-x>", { desc = "Decrement under cursor", noremap = true })
+
 
 -- Quick Commit (Opens a prompt for the message)
 map("n", "<leader>gc", function()
