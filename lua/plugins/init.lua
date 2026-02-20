@@ -1,3 +1,6 @@
+ if vim.loop.os_uname().sysname == "Windows_NT" then
+  vim.env.HOME = vim.env.USERPROFILE
+end
 return {
   {
     "stevearc/conform.nvim",
