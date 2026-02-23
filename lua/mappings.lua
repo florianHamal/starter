@@ -16,6 +16,10 @@ map("n", ";", ":", { desc = "CMD enter command mode" })
 map("i", "jk", "<ESC>")
 
 
+map("n", "gor", "<cmd>Telescope lsp_references<cr>", { desc = "LSP: Go to references" })
+map("n", "gi", "<cmd>Telescope lsp_implementations<cr>", { desc = "LSP: Go to implementation" })
+
+
 map("n", "<leader>gsf", "<cmd>Gitsigns stage_hunk<cr>", { desc = "Git Stage hunk" })
 map("n", "<leader>gsb", "<cmd>Gitsigns stage_buffer<cr>", { desc = "Git Stage Buffer" })
 map("n", "<leader>guh", "<cmd>Gitsigns undo_stage_hunk<cr>", { desc = "Git undo stage" })
@@ -35,10 +39,10 @@ map("n", "<leader>gfh", "<cmd>Telescope git_bcommits<cr>", { desc = "Buffer git 
 map("n", "<leader>gb", "<cmd>Gitsigns blame<cr>", { desc = "Git blame window" })
 
 
-map("n", "<A-Up>", "<cmd>resize +2<cr>", { desc = "Window: Resize Up" })
-map("n", "<A-Down>", "<cmd>resize -2<cr>", { desc = "Window: Resize Down" })
-map("n", "<A-Left>", "<cmd>vertical resize -2<cr>", { desc = "Window: Resize Left" })
-map("n", "<A-Right>", "<cmd>vertical resize +2<cr>", { desc = "Window: Resize Right" })
+map("n", "<A-Up>", "<cmd>resize -2<cr>", { desc = "Window: Resize Up" })
+map("n", "<A-Down>", "<cmd>resize +2<cr>", { desc = "Window: Resize Down" })
+map("n", "<A-Left>", "<cmd>vertical resize +2<cr>", { desc = "Window: Resize Left" })
+map("n", "<A-Right>", "<cmd>vertical resize -2<cr>", { desc = "Window: Resize Right" })
 
 -- Visual Mode: Revert only the lines you have selected
 map("v", "<leader>rh", function()
@@ -46,7 +50,15 @@ map("v", "<leader>rh", function()
 end, { desc = "Git reset selected hunk" })
 
 
----- Ask OpenCode (the main chat/prompt)
+map("n", "<leader>daf", function()
+  -- Save the file first so the formatter sees the latest changes
+  vim.cmd("silent write")
+  -- Run the external command on the current file (%)
+  vim.cmd("!fvm dart format lib test --line-length 120 %")
+  
+  -- Reload the file in the buffer to show the formatted version
+  vim.cmd("edit!")
+end, { desc = "FVM: Dart Format current file" })---- Ask OpenCode (the main chat/prompt)
 --map({ "n", "x" }, "<C-a>", function()
 --  require("opencode").ask("@this: ", { submit = true })
 --end, { desc = "OpenCode: Ask AI" })
