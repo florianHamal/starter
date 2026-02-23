@@ -1,7 +1,7 @@
 local lspconfig = require "lspconfig"
 local nvc = require "nvchad.configs.lspconfig"
 
-local servers = { "html", "cssls" }
+local servers = { "html", "cssls","jdtls" }
 
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup {

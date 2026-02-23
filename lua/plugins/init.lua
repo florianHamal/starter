@@ -15,6 +15,11 @@ return {
   },
 
   {
+    "mfussenegger/nvim-jdtls",
+    ft = { "java" },
+  },
+
+  {
     "akinsho/flutter-tools.nvim",
     lazy = false, -- Important: flutter-tools needs to start to take over dartls
     dependencies = { "nvim-lua/plenary.nvim" },
