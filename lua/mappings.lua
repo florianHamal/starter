@@ -4,6 +4,17 @@ require "nvchad.mappings"
 
 local map = vim.keymap.set
 
+-- Scratch buffer (unsaved, no file)
+map("n", "<leader>ns", function()
+  vim.cmd.enew()
+  vim.bo.buftype = "nofile"
+  vim.bo.bufhidden = "hide"
+  vim.bo.swapfile = false
+  vim.bo.filetype = ""
+  vim.fn.setline(1, "")
+  vim.cmd("normal! G")
+end, { desc = "New scratch buffer" })
+
 map("n", "<leader>dgf", function()
   vim.diagnostic.open_float { border = "rounded" }
 end, { desc = "Floating diagnostic" })
@@ -85,7 +96,7 @@ end, { desc = "FVM: Dart Format current file" })---- Ask OpenCode (the main chat
     vim.o.autoread = true -- Required for `opts.events.reload`
 
     -- Recommended/example keymaps
-    vim.keymap.set({ "n", "x" }, "<C-a>", function() require("opencode").ask("@this: ", { submit = true }) end, { desc = "Ask opencode…" })
+    vim.keymap.set({ "n", "x" }, "<C-a>", function() require("opencode").ask("@", { submit = true }) end, { desc = "Ask opencode…" })
     vim.keymap.set({ "n", "x" }, "<C-x>", function() require("opencode").select() end,                          { desc = "Execute opencode action…" })
     vim.keymap.set({ "n", "t" }, "<C-.>", function() require("opencode").toggle() end,                          { desc = "Toggle opencode" })
 
