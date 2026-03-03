@@ -108,4 +108,8 @@ map("n", "<leader>gc", function()
   end
 end, { desc = "Git Quick Commit" })
 
+-- Flutter Hot Reload/Restart
+map("n", "<leader>frl", "<cmd>FlutterReload<cr>", { desc = "Flutter Hot Reload" })
+map("n", "<leader>frs", "<cmd>FlutterRestart<cr>", { desc = "Flutter Hot Restart" })
+
 -- map({ "n", "i", "v" }, "<C-s>", "<cm > w <cr>")
