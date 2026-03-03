@@ -15,6 +15,10 @@ map("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "LSP Code Action" })
 map("n", ";", ":", { desc = "CMD enter command mode" })
 map("i", "jk", "<ESC>")
 
+map("n", "<leader>cf", function()
+  require("conform").format()
+end, { desc = "Format with conform" })
+
 
 map("n", "gor", "<cmd>Telescope lsp_references<cr>", { desc = "LSP: Go to references" })
 map("n", "gi", "<cmd>Telescope lsp_implementations<cr>", { desc = "LSP: Go to implementation" })

@@ -4,6 +4,7 @@ local options = {
     css = { "prettier" },
     html = { "prettier" },
     dart = { "dart_format" },
+    java = { "google-java-format" },
   },
 
   -- format_on_save = {
