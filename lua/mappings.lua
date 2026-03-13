@@ -54,10 +54,10 @@ map("n", "<leader>gfh", "<cmd>Telescope git_bcommits<cr>", { desc = "Buffer git 
 map("n", "<leader>gb", "<cmd>Gitsigns blame<cr>", { desc = "Git blame window" })
 
 
-map("n", "<A-Up>", "<cmd>resize -2<cr>", { desc = "Window: Resize Up" })
-map("n", "<A-Down>", "<cmd>resize +2<cr>", { desc = "Window: Resize Down" })
-map("n", "<A-Left>", "<cmd>vertical resize +2<cr>", { desc = "Window: Resize Left" })
-map("n", "<A-Right>", "<cmd>vertical resize -2<cr>", { desc = "Window: Resize Right" })
+map("n", "<A-Up>", "<cmd>resize +4<cr>", { desc = "Window: Resize Up" })
+map("n", "<A-Down>", "<cmd>resize -4<cr>", { desc = "Window: Resize Down" })
+map("n", "<A-Left>", "<cmd>vertical resize +4<cr>", { desc = "Window: Resize Left" })
+map("n", "<A-Right>", "<cmd>vertical resize -4<cr>", { desc = "Window: Resize Right" })
 
 -- Visual Mode: Revert only the lines you have selected
 map("v", "<leader>rh", function()
