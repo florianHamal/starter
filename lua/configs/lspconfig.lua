@@ -1,7 +1,7 @@
 local lspconfig = require "lspconfig"
 local nvc = require "nvchad.configs.lspconfig"
 
-local servers = { "html", "cssls" }
+local servers = { "html", "cssls", "kotlin_language_server" }
 
 local fvm_dart = vim.fn.expand("~/fvm/default/bin/dart")
 
@@ -11,7 +11,12 @@ lspconfig.dartls.setup {
   filetypes = { "dart" },
 }
 
-vim.lsp.enable(servers)
+for _, server in ipairs(servers) do
+  lspconfig[server].setup {
+    on_attach = nvc.on_attach,
+    capabilities = nvc.capabilities,
+  }
+end
 
 local jdtls_path = vim.fn.exepath("jdtls")
 if jdtls_path == "" then

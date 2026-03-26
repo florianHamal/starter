@@ -5,6 +5,7 @@ local options = {
     html = { "prettier" },
     dart = { "dart_format" },
     java = { "google-java-format" },
+    kotlin = { "ktlint" },
   },
 
   -- format_on_save = {

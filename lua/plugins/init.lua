@@ -9,6 +9,7 @@ return {
       ensure_installed = {
         "regex",
         "bash",
+        "kotlin",
       },
     },
   },
