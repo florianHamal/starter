@@ -32,7 +32,7 @@ return {
 
   {
     "akinsho/flutter-tools.nvim",
-    lazy = false, -- Important: flutter-tools needs to start to take over dartls
+    ft = { "dart" }, -- Only load for Dart files; flutter-tools registers the LSP on first dart buffer
     dependencies = { "nvim-lua/plenary.nvim" },
     config = function()
       local nvc = require "nvchad.configs.lspconfig"
@@ -42,10 +42,19 @@ return {
         lsp = {
           on_attach = nvc.on_attach,
           capabilities = nvc.capabilities,
+          -- Prevent the LSP from being killed too eagerly when it is slow to respond
+          flags = {
+            debounce_text_changes = 150,
+            allow_incremental_sync = true,
+          },
           settings = {
             showTodos = true,
             completeFunctionCalls = true, -- Auto-tabs into arguments
             enableSnippets = true,        -- Required for "child:" suggestions
+            analysisExcludedFolders = {
+              vim.fn.expand "$HOME/.pub-cache",
+              vim.fn.expand "$HOME/fvm",
+            },
           },
         },
       }

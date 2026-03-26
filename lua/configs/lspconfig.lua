@@ -1,7 +1,17 @@
+local lspconfig = require "lspconfig"
 local nvc = require "nvchad.configs.lspconfig"
 
-nvc.defaults()
-vim.lsp.enable { "html", "cssls" }
+local servers = { "html", "cssls" }
+
+local fvm_dart = vim.fn.expand("~/fvm/default/bin/dart")
+
+lspconfig.dartls.setup {
+  cmd = { fvm_dart, "language-server", "--protocol=lsp" },
+  rootPatterns = { "pubspec.yaml", ".dart_tool" },
+  filetypes = { "dart" },
+}
+
+vim.lsp.enable(servers)
 
 local jdtls_path = vim.fn.exepath("jdtls")
 if jdtls_path == "" then
@@ -42,10 +52,7 @@ local function get_jdtls_config()
   
   local config = {
     cmd = cmd,
-    root_dir = function(bufnr, on_dir)
-      local root = vim.fs.root(bufnr, { "pom.xml", "build.gradle", ".git" })
-      on_dir(root)
-    end,
+    root_dir = lspconfig.util.root_pattern("pom.xml", "build.gradle", ".git"),
     on_attach = nvc.on_attach,
     capabilities = nvc.capabilities,
     settings = {
@@ -66,5 +73,4 @@ local function get_jdtls_config()
   return config
 end
 
-vim.lsp.config("jdtls", get_jdtls_config())
-vim.lsp.enable "jdtls"
+lspconfig.jdtls.setup(get_jdtls_config())

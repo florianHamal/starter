@@ -119,8 +119,16 @@ map("n", "<leader>gc", function()
   end
 end, { desc = "Git Quick Commit" })
 
+-- LSP
+map("n", "<leader>lr", "<cmd>LspRestart<cr>", { desc = "LSP: Restart" })
+map("n", "<leader>li", "<cmd>LspInfo<cr>", { desc = "LSP: Info" })
+map("n", "<leader>ll", "<cmd>LspLog<cr>", { desc = "LSP: Log" })
+
 -- Flutter Hot Reload/Restart
 map("n", "<leader>frl", "<cmd>FlutterReload<cr>", { desc = "Flutter Hot Reload" })
 map("n", "<leader>frs", "<cmd>FlutterRestart<cr>", { desc = "Flutter Hot Restart" })
-
+map("n", "<leader>frn", "<cmd>FlutterRun<cr>", { desc = "Flutter run" })
+map("n", "<leader>flt", "<cmd>FlutterLogToggle<cr>", { desc = "Flutter log toggle" })
+map("n", "<leader>flc", "<cmd>FlutterLogClear<cr>", { desc = "Flutter log clear" })
+map("n", "<leader>fq", "<cmd>FlutterQuit<cr>", { desc = "Flutter quit" })
 -- map({ "n", "i", "v" }, "<C-s>", "<cm > w <cr>")
