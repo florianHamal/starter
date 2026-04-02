@@ -59,6 +59,17 @@ return {
           },
         },
       }
+
+      local flutter_lsp_group = vim.api.nvim_create_augroup("FlutterLspReattach", { clear = true })
+      vim.api.nvim_create_autocmd({ "BufEnter", "BufReadPost" }, {
+        group = flutter_lsp_group,
+        pattern = "*.dart",
+        callback = function(args)
+          if #vim.lsp.get_clients { bufnr = args.buf, name = "dartls" } == 0 then
+            require("flutter-tools.lsp").attach()
+          end
+        end,
+      })
     end,
   },
 {
@@ -114,5 +125,15 @@ return {
       --   If not available, we use `mini` as the fallback
       "rcarriga/nvim-notify",
     }
+  },
+
+  {
+    "sphamba/smear-cursor.nvim",
+    lazy = false,
+    opts = {
+      stiffness = 0.8,
+      trailing_stiffness = 0.5,
+      distance_stop_animating = 0.5,
+    },
   },
 }
