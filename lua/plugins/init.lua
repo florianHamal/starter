@@ -10,6 +10,8 @@ return {
         "regex",
         "bash",
         "kotlin",
+        "markdown",
+        "markdown_inline",
       },
     },
   },
@@ -135,5 +137,14 @@ return {
       trailing_stiffness = 0.5,
       distance_stop_animating = 0.5,
     },
+  },
+  {
+    "MeanderingProgrammer/render-markdown.nvim",
+    ft = { "markdown" },
+    cmd = { "RenderMarkdown" },
+    dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-mini/mini.nvim" },
+    ---@module "render-markdown"
+    ---@type render.md.UserConfig
+    opts = {},
   },
 }

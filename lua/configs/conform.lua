@@ -3,6 +3,7 @@ local options = {
     lua = { "stylua" },
     css = { "prettier" },
     html = { "prettier" },
+    markdown = { "prettier" },
     dart = { "dart_format" },
     java = { "google-java-format" },
     kotlin = { "ktlint" },
