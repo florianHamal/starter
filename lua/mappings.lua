@@ -4,6 +4,9 @@ require "nvchad.mappings"
 
 local map = vim.keymap.set
 
+
+vim.keymap.set({ 'i', 'v', 'c' }, 'jk', '<Esc>', { noremap = true, desc = "Exit to Normal mode" })
+
 -- Scratch buffer (unsaved, no file)
 map("n", "<leader>ns", function()
   vim.cmd.enew()
