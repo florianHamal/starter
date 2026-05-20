@@ -6,13 +6,17 @@ return {
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdate",
     opts = {
-      ensure_installed = {
-        "regex",
-        "bash",
-        "kotlin",
-        "markdown",
-        "markdown_inline",
-      },
+       ensure_installed = {
+         "regex",
+         "bash",
+         "kotlin",
+         "markdown",
+         "markdown_inline",
+         "javascript",
+         "typescript",
+         "tsx",
+         "jsx",
+       },
     },
   },
 
@@ -135,8 +139,86 @@ return {
     opts = {
       stiffness = 0.8,
       trailing_stiffness = 0.5,
-      distance_stop_animating = 0.5,
+      distance_stop_animating = 1.0,
+      time_interval = 24,
+      smear_vertically = false,
+      smear_between_neighbor_lines = false,
+      scroll_buffer_space = false,
     },
+    config = function(_, opts)
+      local events = require("smear_cursor.events")
+      local smear = require("smear_cursor")
+
+      local mode_colors = {
+        n = "#7aa2f7",
+        i = "#9ece6a",
+        v = "#e0af68",
+        V = "#e0af68",
+        ["\22"] = "#e0af68",
+        c = "#bb9af7",
+        R = "#f7768e",
+        t = "#73daca",
+      }
+
+      local set_mode_cursor_highlights = function()
+        vim.api.nvim_set_hl(0, "CursorNormal", { fg = "#1a1b26", bg = mode_colors.n })
+        vim.api.nvim_set_hl(0, "CursorInsert", { fg = "#1a1b26", bg = mode_colors.i })
+        vim.api.nvim_set_hl(0, "CursorVisual", { fg = "#1a1b26", bg = mode_colors.v })
+        vim.api.nvim_set_hl(0, "CursorCommand", { fg = "#1a1b26", bg = mode_colors.c })
+        vim.api.nvim_set_hl(0, "CursorReplace", { fg = "#1a1b26", bg = mode_colors.R })
+        vim.api.nvim_set_hl(0, "CursorTerminal", { fg = "#1a1b26", bg = mode_colors.t })
+
+        vim.opt.guicursor = table.concat({
+          "n:block-CursorNormal",
+          "v:block-CursorVisual",
+          "c:block-CursorCommand",
+          "i-ci-ve:ver25-CursorInsert",
+          "r-cr:hor20-CursorReplace",
+          "o:hor50-CursorVisual",
+          "a:blinkon0",
+        }, ",")
+      end
+
+      local apply_mode_cursor_color = function()
+        local mode = vim.api.nvim_get_mode().mode
+        local color = mode_colors[mode:sub(1, 1)] or mode_colors.n
+
+        vim.api.nvim_set_hl(0, "Cursor", { fg = "#1a1b26", bg = color })
+        smear.cursor_color = color
+      end
+
+      local remove_win_scrolled = function()
+        local ok, autocmds = pcall(vim.api.nvim_get_autocmds, {
+          group = "SmearCursor",
+          event = "WinScrolled",
+        })
+        if not ok then return end
+
+        for _, autocmd in ipairs(autocmds) do
+          pcall(vim.api.nvim_del_autocmd, autocmd.id)
+        end
+      end
+
+      local original_listen = events.listen
+      events.listen = function(...)
+        original_listen(...)
+        remove_win_scrolled()
+      end
+
+      smear.setup(opts)
+      local mode_group = vim.api.nvim_create_augroup("SmearCursorModeColor", { clear = true })
+      vim.api.nvim_create_autocmd({ "ModeChanged", "VimEnter", "ColorScheme" }, {
+        group = mode_group,
+        callback = function()
+          set_mode_cursor_highlights()
+          apply_mode_cursor_color()
+        end,
+      })
+      set_mode_cursor_highlights()
+      apply_mode_cursor_color()
+
+      vim.schedule(remove_win_scrolled)
+    end,
   },
   {
     "MeanderingProgrammer/render-markdown.nvim",
