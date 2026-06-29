@@ -101,7 +101,27 @@ end, { desc = "FVM: Dart Format current file" })---- Ask OpenCode (the main chat
     -- Recommended/example keymaps
     vim.keymap.set({ "n", "x" }, "<C-a>", function() require("opencode").ask("@", { submit = true }) end, { desc = "Ask opencode…" })
     vim.keymap.set({ "n", "x" }, "<C-x>", function() require("opencode").select() end,                          { desc = "Execute opencode action…" })
-    vim.keymap.set({ "n", "t" }, "<C-.>", function() require("opencode").toggle() end,                          { desc = "Toggle opencode" })
+    vim.keymap.set({ "n", "t" }, "<C-.>", function()
+      -- Find the opencode terminal buffer
+      for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+        local name = vim.api.nvim_buf_get_name(buf)
+        if name:match("term://.*opencode") then
+          -- Check if it has a visible window
+          for _, win in ipairs(vim.api.nvim_list_wins()) do
+            if vim.api.nvim_win_get_buf(win) == buf then
+              vim.api.nvim_win_close(win, false)
+              return
+            end
+          end
+          -- Buffer exists but not visible — show it
+          vim.cmd("vsplit")
+          vim.api.nvim_win_set_buf(0, buf)
+          return
+        end
+      end
+      -- No opencode buffer yet — open it
+      require("opencode").ask()
+    end, { desc = "Toggle opencode" })
 
     vim.keymap.set({ "n", "x" }, "go",  function() return require("opencode").operator("@this ") end,        { desc = "Add range to opencode", expr = true })
     vim.keymap.set("n",          "goo", function() return require("opencode").operator("@this ") .. "_" end, { desc = "Add line to opencode", expr = true })

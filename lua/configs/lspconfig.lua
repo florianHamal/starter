@@ -1,7 +1,7 @@
 local lspconfig = require "lspconfig"
 local nvc = require "nvchad.configs.lspconfig"
 
-local servers = { "html", "cssls", "kotlin_language_server", "marksman", "ts_ls" }
+local servers = { "html", "cssls", "marksman", "ts_ls" }
 
 for _, server in ipairs(servers) do
   lspconfig[server].setup {
@@ -9,6 +9,14 @@ for _, server in ipairs(servers) do
     capabilities = nvc.capabilities,
   }
 end
+
+lspconfig.kotlin_language_server.setup {
+  on_attach = nvc.on_attach,
+  capabilities = nvc.capabilities,
+  init_options = {
+    storagePath = vim.fn.stdpath("cache") .. "/kotlin-language-server",
+  },
+}
 
 local jdtls_path = vim.fn.exepath("jdtls")
 if jdtls_path == "" then
